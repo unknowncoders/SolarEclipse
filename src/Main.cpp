@@ -19,12 +19,12 @@ int main(){
 
     Object3d obj1,obj2;
  
-    obj1.LoadFile("earth.bmp");    
+    obj1.LoadFile("resources/earth.bmp");    
     obj1.LoadSphere(25, 150, 150);
     obj1.mapcolor();
     
     obj2.LoadSphere(10,50,50);
-    obj2.LoadFile("earth.bmp");
+    obj2.LoadFile("resources/earth.bmp");
     obj2.mapcolor();
 
     SDL_Event event;
