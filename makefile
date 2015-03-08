@@ -16,7 +16,8 @@ OBJ_FILES := $(addprefix $(OBJ_DIR)/,$(CPP_FILES:$(SRC_DIR)/%.cpp=%.o))
 CXX := g++
 CXXLIBS := 
 LDLIBS := -lSDL
-CXXFLAGS := -I $(INC_DIR) -std=c++11 -Wconversion $(CXXLIBS) 
+CXXFLAGS := -I $(INC_DIR) -std=c++11 $(CXXLIBS) 
+##CXXFLAGS := -I $(INC_DIR) -std=c++11 -Wconversion $(CXXLIBS) 
 LDFLAGS := --std=c++11 $(LDLIBS)
 
 ## Build the application

@@ -34,31 +34,31 @@ int main(){
     while (1)
     {
     
-    G.clrscr();
-    G.resetZ();
+        G.clrscr();
+        G.resetZ();
 
-    obj1.drawearth(&G,camera,LookTo,angle);
-    obj2.drawmoon(&G,camera,LookTo,angle);
+        obj1.drawearth(&G,camera,LookTo,angle);
+        obj2.drawmoon(&G,camera,LookTo,angle);
 
-    angle+=2;
+        angle+=2;
 
-    if(angle>360)
-    angle= 0;
+        if(angle>360)
+        angle= 0;
    
-    while(SDL_PollEvent(&event))
-        {
-   
-                switch(event.type)
+        while(SDL_PollEvent(&event))
             {
-        
-               case SDL_KEYDOWN:
-                switch (event.key.keysym.sym){
-                   case SDLK_ESCAPE:
-                           return 0;
+   
+                    switch(event.type)
+                {
+            
+                   case SDL_KEYDOWN:
+                    switch (event.key.keysym.sym){
+                       case SDLK_ESCAPE:
+                               return 0;
+                    }
                 }
             }
-        }
-    G.refresh();
+        G.refresh();
     }
 }
 
