@@ -15,6 +15,8 @@ using namespace std;
             
             Vec3 cal_earth(const Vec3& source,float angle);
             
+            Vec3 cal_earth_normal(const Vec3& normal,float angle);
+
             Vec3 cal_moon(const Vec3& source,float angle);
             
             Vec3 WtoV(const Vec3& source, const Vec3& camera, const Vec3& LookTo);

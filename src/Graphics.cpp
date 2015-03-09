@@ -77,16 +77,17 @@
             
                  Vertex temp; 
             
-                 for(int i = 0; i<2; i++)
-                 for(int j =i+1; j< 3; j++)
-                 {
-                      if(v[i].vertices.y>v[j].vertices.y)
-                      {
-                           temp = v[i];
-                           v[i] = v[j];
-                           v[j] = temp;
-                      }
-                         
+                 for(int i = 0; i<2; i++){
+                    for(int j =i+1; j< 3; j++)
+                    {
+                         if(v[i].vertices.y>v[j].vertices.y)
+                         {
+                              temp = v[i];
+                              v[i] = v[j];
+                              v[j] = temp;
+                         }
+                            
+                    }
                  }
             
             
@@ -182,7 +183,6 @@
     }
     
     void Graphics::fill_top_flat_triangle(Vertex v1, Vertex v2, Vertex v3)
-    
     {
      
          Vertex t1, t2;

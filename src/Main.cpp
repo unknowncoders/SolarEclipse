@@ -23,7 +23,7 @@ int main(){
     obj1.LoadSphere(25, 150, 150);
     obj1.mapcolor();
     
-    obj2.LoadSphere(10,50,50);
+    obj2.LoadSphere(5,50,50);
     obj2.LoadFile("resources/earth.bmp");
     obj2.mapcolor();
 

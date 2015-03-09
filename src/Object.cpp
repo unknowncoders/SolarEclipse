@@ -59,7 +59,8 @@
         m_vertices.resize(rings*sectors);
     
         int i=0;
-        for (r=0; r<rings; ++r)
+
+        for (r=0; r<rings; ++r){
             for (s=0; s<sectors; ++s)
             {
       
@@ -82,12 +83,13 @@
                 m_vertices[i].normals.z = z;
                 ++i;
             }
+        }
     
         m_indices.resize((rings-1)*(sectors-1)*6);
        
         uint16_t* id = &m_indices[0];
        
-        for (r=0; r<rings-1; ++r)
+        for (r=0; r<rings-1; ++r){
             for (s=0; s<sectors-1; ++s)
             {
                 *id++ = uint16_t(r*sectors + s);
@@ -97,13 +99,14 @@
                 *id++ = uint16_t((r+1)*sectors + s+1);
                 *id++ = uint16_t((r+1)*sectors + s);
             }
+        }
         
     }
     
     void Object3d::mapcolor()
     {
         
-    for(unsigned int i=0;i<m_vertices.size();i++)
+        for(unsigned int i=0;i<m_vertices.size();i++)
         {
            m_vertices[i].color =   Sample(m_vertices[i].texcoords);   
         }
@@ -111,11 +114,20 @@
     
     }
     
+    int Object3d::DecreaseIntensity(int _val, int _margin){
+       int ret = _val - _margin;
+       if(ret < 0) return 0;
+
+       return ret;
+    }
+
     void Object3d::drawearth(Graphics *G, Vec3& camera,Vec3& LookTo,float angle){
       
         unsigned int len = m_vertices.size();
     
         Vertex v[len];
+
+        Vec3 light(1,0,0);
     
        
         for (unsigned int i=0;i<len;i++)
@@ -124,10 +136,17 @@
              v[i] =  m_vertices[i];
     
               v[i].vertices = T.cal_earth(v[i].vertices,angle);
+              v[i].normals = T.cal_earth_normal(v[i].normals,angle);
               v[i].vertices = T.WtoV(v[i].vertices,camera,LookTo);
               v[i].vertices = T.VtoP(v[i].vertices);
               v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
               v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
+
+              if(v[i].normals.dotProduct(light) > 0 ){
+                    v[i].color.r = DecreaseIntensity(v[i].color.r,220);
+                    v[i].color.g = DecreaseIntensity(v[i].color.g,220);
+                    v[i].color.b = DecreaseIntensity(v[i].color.b,220);
+              }
         
         }
     
@@ -141,6 +160,8 @@
         unsigned int len = m_vertices.size();
     
         Vertex v[len];
+
+        Vec3 light(1,0,0);
        
         for (unsigned int i=0;i<len;i++)
         {
@@ -148,11 +169,18 @@
              v[i] =  m_vertices[i];
           
               v[i].vertices = T.cal_moon(v[i].vertices,angle);
+              v[i].normals = T.cal_earth_normal(v[i].normals,angle);
               v[i].vertices = T.WtoV(v[i].vertices,camera,LookTo);
               v[i].vertices = T.VtoP(v[i].vertices);
               v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
               v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
-        
+
+            if(v[i].normals.dotProduct(light) > 0 ){
+                    v[i].color.r = DecreaseIntensity(v[i].color.r,220);
+                    v[i].color.g = DecreaseIntensity(v[i].color.g,220);
+                    v[i].color.b = DecreaseIntensity(v[i].color.b,220);
+              }
+
         }
     
         for(unsigned int i=0;i<m_indices.size();i+=3)

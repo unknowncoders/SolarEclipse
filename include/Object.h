@@ -35,6 +35,8 @@ using namespace std;
             void drawmoon(Graphics* , Vec3& camera,Vec3& LookTo, float);
            
             void LoadObject(string filename);
+
+            int DecreaseIntensity(int _val,int _margin);
             
             void mapcolor();
             void LoadSphere(float radius, uint16_t rings, uint16_t sectors);

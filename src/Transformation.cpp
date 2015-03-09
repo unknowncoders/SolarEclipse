@@ -18,7 +18,21 @@
          return Vec3(S(0), S(1), S(2));
     
     }
+
+    Vec3 Transformation::cal_earth_normal(const Vec3& normal,float angle)
+    {
     
+         Matrix temp(4,4), S(4,1);
+    
+         S(0) = normal.x ; S(1) = normal.y; S(2) = normal.z ; S(3) = 1;
+    
+         temp = RotateY(angle);
+        
+         S = temp *  S;
+    
+         return Vec3(S(0), S(1), S(2));
+    
+    }
     Vec3 Transformation::cal_moon(const Vec3& source,float angle)
     {
         Matrix temp(4,4);
