@@ -13,16 +13,10 @@ using namespace std;
     
             public:
             
-            Vec3 cal_earth(const Vec3& source,float angle);
-            
-            Vec3 cal_earth_normal(const Vec3& normal,float angle);
+            Matrix modelToWorld(const Vec3& preTranslation, float rotationAngle, const Vec3& postTranslation);
 
-            Vec3 cal_moon(const Vec3& source,float angle);
-            
-            Vec3 WtoV(const Vec3& source, const Vec3& camera, const Vec3& LookTo);
-            
-            Vec3 VtoP(const Vec3& source);
-            
+            Matrix worldToView(const Vec3& camera, const Vec3& lookTo);
+
             Matrix Rotation(Vec3& U, Vec3& V, Vec3& N);
             
             Matrix Translate(const Vec3& v);

@@ -17,15 +17,15 @@ int main(){
    
     Graphics G(1024,700);
 
-    Object3d obj1,obj2;
+    Object3d earth,moon;
  
-    obj1.LoadFile("resources/earth.bmp");    
-    obj1.LoadSphere(25, 150, 150);
-    obj1.mapcolor();
+    earth.LoadFile("resources/earth.bmp");    
+    earth.LoadSphere(25, 150, 150);
+    earth.mapcolor();
     
-    obj2.LoadSphere(5,50,50);
-    obj2.LoadFile("resources/earth.bmp");
-    obj2.mapcolor();
+    moon.LoadSphere(5,50,50);
+    moon.LoadFile("resources/earth.bmp");
+    moon.mapcolor();
 
     SDL_Event event;
   
@@ -37,8 +37,8 @@ int main(){
         G.clrscr();
         G.resetZ();
 
-        obj1.drawearth(&G,camera,LookTo,angle);
-        obj2.drawmoon(&G,camera,LookTo,angle);
+        earth.draw(&G,camera,LookTo,Vec3(0,0,0),Vec3(0,0,20),angle);
+        moon.draw(&G,camera,LookTo,Vec3(0,0,-75),Vec3(0,0,75),angle);
 
         angle+=2;
 

@@ -46,6 +46,7 @@ using namespace std;
     };
     
     class Graphics{
+       private:
         SDL_Surface* screen;
         float *Zbuffer;
         

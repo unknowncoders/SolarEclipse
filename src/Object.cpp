@@ -121,70 +121,45 @@
        return ret;
     }
 
-    void Object3d::drawearth(Graphics *G, Vec3& camera,Vec3& LookTo,float angle){
-      
+    void Object3d::draw(Graphics *G, Vec3& camera, Vec3& LookTo, Vec3 preTranslation, Vec3 postTranslation, float angle){
+
         unsigned int len = m_vertices.size();
     
         Vertex v[len];
 
-        Vec3 light(1,0,0);
-    
-       
-        for (unsigned int i=0;i<len;i++)
-        {
-       
-             v[i] =  m_vertices[i];
-    
-              v[i].vertices = T.cal_earth(v[i].vertices,angle);
-              v[i].normals = T.cal_earth_normal(v[i].normals,angle);
-              v[i].vertices = T.WtoV(v[i].vertices,camera,LookTo);
-              v[i].vertices = T.VtoP(v[i].vertices);
-              v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
-              v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
+        Matrix modelToWorldMat(4,4),worldToViewMat(4,4),projectionMat(4,4);
 
-              if(v[i].normals.dotProduct(light) > 0 ){
-                    v[i].color.r = DecreaseIntensity(v[i].color.r,220);
-                    v[i].color.g = DecreaseIntensity(v[i].color.g,220);
-                    v[i].color.b = DecreaseIntensity(v[i].color.b,220);
-              }
-        
-        }
-    
-        for(unsigned int i=0;i<m_indices.size();i+=3)
-               G->fill_all_triangle(v[m_indices[i]],v[m_indices[i+1]], v[m_indices[i+2]]);
-    
-    }
-    
-    void Object3d::drawmoon(Graphics *G, Vec3& camera,Vec3& LookTo,float angle){
-     
-        unsigned int len = m_vertices.size();
-    
-        Vertex v[len];
+        modelToWorldMat = T.modelToWorld(preTranslation,angle,postTranslation);
+        worldToViewMat = T.worldToView(camera,LookTo);
+        projectionMat = T.Perspective(45,(float) 1024/700,0.01,10000);
 
-        Vec3 light(1,0,0);
-       
-        for (unsigned int i=0;i<len;i++)
-        {
-       
-             v[i] =  m_vertices[i];
-          
-              v[i].vertices = T.cal_moon(v[i].vertices,angle);
-              v[i].normals = T.cal_earth_normal(v[i].normals,angle);
-              v[i].vertices = T.WtoV(v[i].vertices,camera,LookTo);
-              v[i].vertices = T.VtoP(v[i].vertices);
-              v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
-              v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
+        Matrix compositeTransformation(4,4);
+        compositeTransformation = projectionMat * worldToViewMat * modelToWorldMat;
 
-            if(v[i].normals.dotProduct(light) > 0 ){
-                    v[i].color.r = DecreaseIntensity(v[i].color.r,220);
-                    v[i].color.g = DecreaseIntensity(v[i].color.g,220);
-                    v[i].color.b = DecreaseIntensity(v[i].color.b,220);
-              }
+        for (unsigned int i=0;i<len;i++){
+
+                v[i] =  m_vertices[i];
+
+                Matrix vertexMat(4,1);
+
+                vertexMat(0) = v[i].vertices.x;
+                vertexMat(1) = v[i].vertices.y;
+                vertexMat(2) = v[i].vertices.z;
+                vertexMat(3) = 1 ;
+
+                vertexMat = compositeTransformation * vertexMat;
+
+
+                v[i].vertices = Vec3(vertexMat(0)/vertexMat(3),vertexMat(1)/vertexMat(3),vertexMat(2)/vertexMat(3));
+
+                v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
+                v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
 
         }
-    
+
         for(unsigned int i=0;i<m_indices.size();i+=3)
                G->fill_all_triangle(v[m_indices[i]],v[m_indices[i+1]], v[m_indices[i+2]]);
-    
+
     }
-    
+
+   

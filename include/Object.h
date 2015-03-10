@@ -31,8 +31,7 @@ using namespace std;
             Color_uint& Sample(float u, float v);
             Color_uint& Sample(const Vec2& v);
     
-            void drawearth(Graphics* , Vec3& camera,Vec3& LookTo, float);
-            void drawmoon(Graphics* , Vec3& camera,Vec3& LookTo, float);
+            void draw(Graphics *G, Vec3& camera,Vec3& LookTo,Vec3 preTranslation, Vec3 postTranslation,float angle);
            
             void LoadObject(string filename);
 

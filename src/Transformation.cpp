@@ -1,124 +1,45 @@
 #include "Transformation.h"
 
-    Vec3 Transformation::cal_earth(const Vec3& source,float angle)
-    {
-    
-         Matrix temp(4,4), S(4,1);
-    
-         S(0) = source.x ; S(1) = source.y; S(2) = source.z ; S(3) = 1;
-    
-         Matrix T1 = Translate(Vec3(0,0, 20));
-    
-         Matrix R = RotateY(angle);
-        
-         temp = T1 * R;
-         
-         S = temp *  S;
-    
-         return Vec3(S(0), S(1), S(2));
-    
+    Matrix Transformation::modelToWorld(const Vec3& preTranslation, float rotationAngle, const Vec3& postTranslation){
+
+            Matrix transformationMatrix(4,4);
+
+            Matrix preTranslationMatrix = Translate(preTranslation);
+            Matrix rotationMatrix = RotateY(rotationAngle);
+            Matrix postTranslationMatrix = Translate(postTranslation);
+
+            transformationMatrix = postTranslationMatrix * rotationMatrix * preTranslationMatrix ;
+
+            return transformationMatrix;
+
     }
 
-    Vec3 Transformation::cal_earth_normal(const Vec3& normal,float angle)
-    {
-    
-         Matrix temp(4,4), S(4,1);
-    
-         S(0) = normal.x ; S(1) = normal.y; S(2) = normal.z ; S(3) = 1;
-    
-         temp = RotateY(angle);
-        
-         S = temp *  S;
-    
-         return Vec3(S(0), S(1), S(2));
-    
-    }
-    Vec3 Transformation::cal_moon(const Vec3& source,float angle)
-    {
-        Matrix temp(4,4);
-    
-        Matrix S(4,1);   
-        S(0) = source.x ; S(1) = source.y; S(2) = source.z ; S(3) = 1;
-    
-       
-        Matrix T1 = Translate(Vec3(0,0,-75));
-    
-         Matrix R = RotateY(angle);
-        
-         Matrix T2 = Translate(Vec3(0,0,75));
-      
-         temp = T2 *  R * T1;
-          
-         S = temp * S;
-    
-         return Vec3(S(0), S(1), S(2));
-    }
-    
-    
-    Vec3 Transformation::WtoV(const Vec3& source, const Vec3& camera, const Vec3& LookTo)
-    {
-    
-        Matrix WtoC(4,4);
-       
+   Matrix Transformation::worldToView(const Vec3& camera, const Vec3& lookTo){
+
+        Matrix transformationMatrix(4,4);
+
         Vec3 N,U,V(0,1,0);
-      
-        Matrix S(4,1); //The source point in matrix form
-       
-        S(0) = source.x ; S(1) = source.y; S(2) = source.z ; S(3) = 1;
-        
-        N = camera-LookTo;
+
+        N = camera-lookTo;
         N = N/ N.magnitude();
-    
+
         U = V.crossProduct(N);
         U = U / U.magnitude();
-    
+
         V = N.crossProduct(U);
+
+        Matrix translation(4,4); 
+        translation = Translate(Vec3(-1*camera.x, -1 * camera.y, -1 * camera.z));
+
+        Matrix rotation(4,4);
+        rotation = Rotation(U,V,N);
     
-       Matrix T(4,4); 
-    
-       T = Translate(Vec3(-1*camera.x, -1 * camera.y, -1 * camera.z));
-       
-       Matrix R(4,4);
-       R = Rotation(U,V,N);
-    
-    
-        WtoC = R*T;
-    
-          
-        S = WtoC * S;
-    
-        Vec3 retVal;
-        
-        retVal.x = S(0);
-        retVal.y = S(1);
-        retVal.z = S(2);
-    
-        return retVal;
+        transformationMatrix = rotation * translation;
+
+        return transformationMatrix;
+
     }
-    
-    Vec3 Transformation::VtoP(const Vec3& source)
-    {
-    
-       
-    
-        Matrix S(4,1); //The source point in matrix form
-        S(0) = source.x ; S(1) = source.y; S(2) = source.z ; S(3) = 1;
-    
-        Matrix VtoP(4,4);
-    
-        VtoP =  Perspective(45,(float) 1024/700,0.01,10000);
-    
-        S = VtoP * S;
-    
-        Vec3 retVal;
-        
-        retVal.x = S(0)/S(3);
-        retVal.y = S(1)/S(3);
-        retVal.z = S(2)/S(3);
-         return retVal;
-    
-    }
-    
+   
     Matrix Transformation::Rotation(Vec3& U, Vec3& V, Vec3& N)
     {
     
