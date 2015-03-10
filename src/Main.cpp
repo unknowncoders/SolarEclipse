@@ -16,7 +16,7 @@ int main(){
    
     Graphics G(1024,700);
 
-    Object3d earth,moon,mars;
+    Object3d earth,moon;
  
     earth.LoadFile("resources/earth.bmp");    
     earth.LoadSphere(25, 150, 150);
