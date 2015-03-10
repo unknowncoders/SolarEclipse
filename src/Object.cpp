@@ -1,14 +1,14 @@
 #include "Object.h"
 
-    void Object3d::LoadFile(string filename)
+    void Object3d::LoadFile(std::string filename)
     {
-            ifstream file;
+            std::ifstream file;
             file.open(filename.c_str());
      
             if (file.is_open())
             {
                 uint32_t sizeFile, offset;
-                file.seekg(0, ios::beg);
+                file.seekg(0, std::ios::beg);
                 file.seekg(2);
                 file.read((char*)&sizeFile, sizeof(sizeFile));
                 file.seekg(10);
@@ -103,6 +103,21 @@
         
     }
     
+    void Object3d::setAttributes(Vec3 _pos , float _selfRotAngle, float _originRotAngle){
+
+            position = _pos;
+            selfRotationAngle = _selfRotAngle;
+            originRotationAngle = _originRotAngle;
+
+    }
+
+    void Object3d::setAngles(float _selfRotAngle, float _originRotAngle){
+
+            selfRotationAngle = _selfRotAngle;
+            originRotationAngle = _originRotAngle;
+            
+    }
+
     void Object3d::mapcolor()
     {
         
@@ -121,7 +136,7 @@
        return ret;
     }
 
-    void Object3d::draw(Graphics *G, Vec3& camera, Vec3& LookTo, Vec3 preTranslation, Vec3 postTranslation, float angle){
+    void Object3d::draw(Graphics *G, Vec3& camera, Vec3& LookTo){
 
         unsigned int len = m_vertices.size();
     
@@ -129,7 +144,7 @@
 
         Matrix modelToWorldMat(4,4),worldToViewMat(4,4),projectionMat(4,4);
 
-        modelToWorldMat = T.modelToWorld(preTranslation,angle,postTranslation);
+        modelToWorldMat = T.modelToWorld(position, selfRotationAngle, originRotationAngle);
         worldToViewMat = T.worldToView(camera,LookTo);
         projectionMat = T.Perspective(45,(float) 1024/700,0.01,10000);
 

@@ -1,8 +1,7 @@
 #ifndef TRANSFORMATION_H
 #define TRANSFORMATION_H
 
-#include <iostream>
-using namespace std;
+//#include <iostream>
 
 #include "Vector.h"
 #include "Matrix.h"
@@ -13,7 +12,7 @@ using namespace std;
     
             public:
             
-            Matrix modelToWorld(const Vec3& preTranslation, float rotationAngle, const Vec3& postTranslation);
+            Matrix modelToWorld(const Vec3& translation, float selfRotationAngle, float originRotationAngle);
 
             Matrix worldToView(const Vec3& camera, const Vec3& lookTo);
 

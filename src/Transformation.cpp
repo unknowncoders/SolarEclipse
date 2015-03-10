@@ -1,14 +1,14 @@
 #include "Transformation.h"
 
-    Matrix Transformation::modelToWorld(const Vec3& preTranslation, float rotationAngle, const Vec3& postTranslation){
+    Matrix Transformation::modelToWorld(const Vec3& translation, float selfRotationAngle, float originRotationAngle){
 
             Matrix transformationMatrix(4,4);
 
-            Matrix preTranslationMatrix = Translate(preTranslation);
-            Matrix rotationMatrix = RotateY(rotationAngle);
-            Matrix postTranslationMatrix = Translate(postTranslation);
+            Matrix selfRotationMatrix = RotateY(selfRotationAngle);
+            Matrix translationMatrix = Translate(translation);
+            Matrix originRotationMatrix = RotateY(originRotationAngle);
 
-            transformationMatrix = postTranslationMatrix * rotationMatrix * preTranslationMatrix ;
+            transformationMatrix = originRotationMatrix * translationMatrix * selfRotationMatrix;
 
             return transformationMatrix;
 

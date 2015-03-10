@@ -8,7 +8,6 @@
 #include<iostream>
 #include<algorithm>
 #include <stdint.h>
-using namespace std;
 
 #define round(a) ((int) (a+0.5))
 
@@ -53,11 +52,11 @@ using namespace std;
        public:
             Graphics(int width = 1024,int height=600);
     
-            void setpixel(Vec3 P,Color c);
+            void setpixel(const Vec3& P,Color c);
         
             void setpixel(int x,int y,float z,  Color c);
     
-            void line(Vertex P1,Vertex P2);
+            void line(const Vertex& P1,const Vertex& P2);
     
             bool WaitQuit();
     

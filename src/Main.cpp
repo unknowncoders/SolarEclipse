@@ -8,7 +8,6 @@
 #include "Vector.h"
 #include "Object.h"
 
-using namespace std;
 
 int main(){
    
@@ -17,19 +16,23 @@ int main(){
    
     Graphics G(1024,700);
 
-    Object3d earth,moon;
+    Object3d earth,moon,mars;
  
     earth.LoadFile("resources/earth.bmp");    
     earth.LoadSphere(25, 150, 150);
     earth.mapcolor();
+    earth.setAttributes(Vec3(0,0,0),0,0);
     
     moon.LoadSphere(5,50,50);
     moon.LoadFile("resources/earth.bmp");
     moon.mapcolor();
+    moon.setAttributes(Vec3(0,0,-90),0,0);
+
 
     SDL_Event event;
   
     float angle = 0;
+    float angle1 = 0;
     
     while (1)
     {
@@ -37,10 +40,13 @@ int main(){
         G.clrscr();
         G.resetZ();
 
-        earth.draw(&G,camera,LookTo,Vec3(0,0,0),Vec3(0,0,20),angle);
-        moon.draw(&G,camera,LookTo,Vec3(0,0,-75),Vec3(0,0,75),angle);
+        earth.draw(&G,camera,LookTo);
+        moon.draw(&G,camera,LookTo);
+        earth.setAngles(angle,0);
+        moon.setAngles(0,angle1);
 
         angle+=2;
+        angle1+=1;
 
         if(angle>360)
         angle= 0;

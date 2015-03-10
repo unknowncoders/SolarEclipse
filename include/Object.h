@@ -12,7 +12,7 @@
 #include <string>
 #include <list>
 
-using namespace std;
+//using namespace std;
 
     class Object3d{
     
@@ -21,25 +21,29 @@ using namespace std;
                 Transformation T;
     
                 uint32_t width, height;
-                vector<Color_uint> pixels; 
+                std::vector<Color_uint> pixels; 
     
-                vector<Vertex> m_vertices;     // Vertex Buffer
-                vector<uint16_t> m_indices;    // Index Buffer
+                std::vector<Vertex> m_vertices;     // Vertex Buffer
+                std::vector<uint16_t> m_indices;    // Index Buffer
+
+                float selfRotationAngle;
+                float originRotationAngle;
+                Vec3 position;
     
         public:
           
             Color_uint& Sample(float u, float v);
             Color_uint& Sample(const Vec2& v);
     
-            void draw(Graphics *G, Vec3& camera,Vec3& LookTo,Vec3 preTranslation, Vec3 postTranslation,float angle);
            
-            void LoadObject(string filename);
-
-            int DecreaseIntensity(int _val,int _margin);
-            
             void mapcolor();
             void LoadSphere(float radius, uint16_t rings, uint16_t sectors);
-            void LoadFile(string filename);
+            void LoadFile(std::string filename);
+            void setAttributes(Vec3 _pos , float _selfRotAngle, float _originRotAngle);
+            void setAngles(float _selfRotAngle, float _originRotAngle);
+
+            void draw(Graphics *G, Vec3& camera,Vec3& LookTo);
+            int DecreaseIntensity(int _val,int _margin);
     };
 
 

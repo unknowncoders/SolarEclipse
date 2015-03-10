@@ -75,13 +75,13 @@
             
             //arranging the vertices in ascending order
             
-                 Vertex temp; 
             
                  for(int i = 0; i<2; i++){
                     for(int j =i+1; j< 3; j++)
                     {
                          if(v[i].vertices.y>v[j].vertices.y)
                          {
+                            Vertex temp; 
                               temp = v[i];
                               v[i] = v[j];
                               v[j] = temp;
@@ -238,7 +238,7 @@
      
     }
     
-    void Graphics::setpixel(Vec3 P,Color c)
+    void Graphics::setpixel(const Vec3& P,Color c)
     {
         int *pixmem32;
         int colour;
@@ -251,7 +251,8 @@
         int y = P.y;
     
     
-        if (!(x>=0 && x <= width && y >=0 && y<=height)) return;
+        //if (!(x>=0 && x <= width && y >=0 && y<=height)) return;
+        if (x<0 || x > width || y < 0 || y > height) return;
     
         if (P.z > Zbuffer[height*x + y])
             return;
@@ -265,8 +266,7 @@
     }
     
     void Graphics::setpixel(int x,int y,float z,  Color c){
-        Vec3 temp(x,y,z);
-        setpixel(temp,c);
+        setpixel(Vec3(x,y,z),c);
     }
     
     void Graphics::refresh(){
@@ -286,11 +286,11 @@
               
                Zbuffer = new float[(screen->w)*(screen->h)];
                
-               fill_n(Zbuffer,(screen->w)*(screen->h),100);
+               std::fill_n(Zbuffer,(screen->w)*(screen->h),100);
     
     }
     
-    void Graphics::line(Vertex P1, Vertex P2){
+    void Graphics::line(const Vertex& P1,const Vertex& P2){
     
             float xstart = P1.vertices.x;
             float xend = P2.vertices.x;
