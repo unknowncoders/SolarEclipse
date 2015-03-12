@@ -33,6 +33,9 @@
         public:
 
             float diffusionCoeff;
+            float specularCoeff;
+            float phongConstant;
+
           
             Color_uint& Sample(float u, float v);
             Color_uint& Sample(const Vec2& v);

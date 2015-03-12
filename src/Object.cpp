@@ -159,9 +159,13 @@
 
         normalRotationMat = T.modelToWorld(position, selfRotationAngle + originRotationAngle, 0.0);
 
+        Vec3 cameraVector = camera/camera.magnitude();
+        Vec3 halfwayVector = cameraVector + G->lightVector;
+        halfwayVector = halfwayVector/halfwayVector.magnitude();
+
+
         Matrix compositeTransformation(4,4);
         compositeTransformation = projectionMat * worldToViewMat * modelToWorldMat;
-        float ambientFactor =  G->lightColor.x * G->ambientCoeff;
 
         for (unsigned int i=0;i<len;i++){
 
@@ -190,10 +194,12 @@
                 v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
 
                 float diffusionFactor = diffusionCoeff * lowerLimitZero(v[i].normals.dotProduct(G->lightVector));
+                float specularFactor = specularCoeff * pow(lowerLimitZero(v[i].normals.dotProduct(halfwayVector)),phongConstant);
 
-                v[i].color.r = ambientFactor * v[i].color.r + v[i].color.r * diffusionFactor;
-                v[i].color.g = ambientFactor * v[i].color.g + v[i].color.g * diffusionFactor;
-                v[i].color.b = ambientFactor * v[i].color.b + v[i].color.b * diffusionFactor;
+                //TODO Fix whether to use the lightColor or vertexColor or a dedicated color for the specular lighting
+                v[i].color.r = G->lightColor.x * G->ambientCoeff * v[i].color.r + v[i].color.r * diffusionFactor + specularFactor * G->lightColor.x;
+                v[i].color.g = G->lightColor.y * G->ambientCoeff * v[i].color.g + v[i].color.g * diffusionFactor + specularFactor * G->lightColor.y;
+                v[i].color.b = G->lightColor.z * G->ambientCoeff * v[i].color.b + v[i].color.b * diffusionFactor + specularFactor * G->lightColor.z;
 
 
 
