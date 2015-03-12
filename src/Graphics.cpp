@@ -65,6 +65,12 @@
                     delete[] Zbuffer;
     }
     
+    void Graphics::setlightcolor(Vec3 _lightColor){
+            
+            lightColor = _lightColor;
+
+    }
+
     void  Graphics::fill_all_triangle(Vertex v1, Vertex v2, Vertex v3)
     {
     

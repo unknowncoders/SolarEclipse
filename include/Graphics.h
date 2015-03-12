@@ -50,10 +50,16 @@
         float *Zbuffer;
         
        public:
+
+            Vec3 lightColor;
+            float ambientCoeff;
+        
             Graphics(int width = 1024,int height=600);
     
             void setpixel(const Vec3& P,Color c);
-        
+
+            void setlightcolor(Vec3 _lightColor);
+
             void setpixel(int x,int y,float z,  Color c);
     
             void line(const Vertex& P1,const Vertex& P2);

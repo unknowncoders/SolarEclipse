@@ -15,6 +15,8 @@ int main(){
     Vec3 LookTo(0,0, 0);
    
     Graphics G(1024,700);
+    G.ambientCoeff = 1.0f;
+    G.setlightcolor(Vec3(0.75,0.75,0.75));
 
     Object3d earth,moon;
  

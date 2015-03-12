@@ -170,6 +170,11 @@
                 v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
                 v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
 
+                v[i].color.r *= G->lightColor.x * G->ambientCoeff ;
+                v[i].color.g *= G->lightColor.y * G->ambientCoeff ;
+                v[i].color.b *= G->lightColor.z * G->ambientCoeff ;
+
+
         }
 
         for(unsigned int i=0;i<m_indices.size();i+=3)
