@@ -53,12 +53,15 @@
 
             Vec3 lightColor;
             float ambientCoeff;
+            Vec3 lightVector;
         
             Graphics(int width = 1024,int height=600);
     
             void setpixel(const Vec3& P,Color c);
 
             void setlightcolor(Vec3 _lightColor);
+
+            void setlightvector(Vec3 _lightVector);
 
             void setpixel(int x,int y,float z,  Color c);
     

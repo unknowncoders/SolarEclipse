@@ -136,43 +136,65 @@
        return ret;
     }
 
+    float Object3d::lowerLimitZero(float _val){
+
+            if(_val < 0 )
+                    return 0;
+
+            return _val;
+
+    }
+
     void Object3d::draw(Graphics *G, Vec3& camera, Vec3& LookTo){
 
         unsigned int len = m_vertices.size();
     
         Vertex v[len];
 
-        Matrix modelToWorldMat(4,4),worldToViewMat(4,4),projectionMat(4,4);
+        Matrix modelToWorldMat(4,4),worldToViewMat(4,4),projectionMat(4,4),normalRotationMat(4,4);
 
         modelToWorldMat = T.modelToWorld(position, selfRotationAngle, originRotationAngle);
         worldToViewMat = T.worldToView(camera,LookTo);
         projectionMat = T.Perspective(45,(float) 1024/700,0.01,10000);
 
+        normalRotationMat = T.modelToWorld(position, selfRotationAngle + originRotationAngle, 0.0);
+
         Matrix compositeTransformation(4,4);
         compositeTransformation = projectionMat * worldToViewMat * modelToWorldMat;
+        float ambientFactor =  G->lightColor.x * G->ambientCoeff;
 
         for (unsigned int i=0;i<len;i++){
 
                 v[i] =  m_vertices[i];
 
-                Matrix vertexMat(4,1);
+                Matrix vertexMat(4,1),normalMat(4,1);
 
                 vertexMat(0) = v[i].vertices.x;
                 vertexMat(1) = v[i].vertices.y;
                 vertexMat(2) = v[i].vertices.z;
                 vertexMat(3) = 1 ;
 
+                normalMat(0) = v[i].normals.x;
+                normalMat(1) = v[i].normals.y;
+                normalMat(2) = v[i].normals.z;
+                normalMat(3) = 1;
+
                 vertexMat = compositeTransformation * vertexMat;
+                normalMat = normalRotationMat * normalMat;
 
 
                 v[i].vertices = Vec3(vertexMat(0)/vertexMat(3),vertexMat(1)/vertexMat(3),vertexMat(2)/vertexMat(3));
+                v[i].normals = Vec3(normalMat(0),normalMat(1),normalMat(2));
 
                 v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
                 v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
 
-                v[i].color.r *= G->lightColor.x * G->ambientCoeff ;
-                v[i].color.g *= G->lightColor.y * G->ambientCoeff ;
-                v[i].color.b *= G->lightColor.z * G->ambientCoeff ;
+                float diffusionFactor = diffusionCoeff * lowerLimitZero(v[i].normals.dotProduct(G->lightVector));
+
+                v[i].color.r = ambientFactor * v[i].color.r + v[i].color.r * diffusionFactor;
+                v[i].color.g = ambientFactor * v[i].color.g + v[i].color.g * diffusionFactor;
+                v[i].color.b = ambientFactor * v[i].color.b + v[i].color.b * diffusionFactor;
+
 
 
         }

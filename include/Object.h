@@ -31,6 +31,8 @@
                 Vec3 position;
     
         public:
+
+            float diffusionCoeff;
           
             Color_uint& Sample(float u, float v);
             Color_uint& Sample(const Vec2& v);
@@ -42,6 +44,7 @@
             void setAttributes(Vec3 _pos , float _selfRotAngle, float _originRotAngle);
             void setAngles(float _selfRotAngle, float _originRotAngle);
 
+            float lowerLimitZero(float _val);
             void draw(Graphics *G, Vec3& camera,Vec3& LookTo);
             int DecreaseIntensity(int _val,int _margin);
     };

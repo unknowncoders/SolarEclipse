@@ -70,6 +70,12 @@
             lightColor = _lightColor;
 
     }
+    
+    void Graphics::setlightvector(Vec3 _lightVector){
+
+            lightVector = _lightVector;
+
+    }
 
     void  Graphics::fill_all_triangle(Vertex v1, Vertex v2, Vertex v3)
     {

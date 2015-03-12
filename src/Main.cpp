@@ -15,8 +15,9 @@ int main(){
     Vec3 LookTo(0,0, 0);
    
     Graphics G(1024,700);
-    G.ambientCoeff = 1.0f;
-    G.setlightcolor(Vec3(0.75,0.75,0.75));
+    G.ambientCoeff = 0.02f;
+    G.setlightcolor(Vec3(1.0,1.0,1.0));
+    G.setlightvector(Vec3(-1.0,0.0,0.0));
 
     Object3d earth,moon;
  
@@ -24,11 +25,13 @@ int main(){
     earth.LoadSphere(25, 150, 150);
     earth.mapcolor();
     earth.setAttributes(Vec3(0,0,0),0,0);
+    earth.diffusionCoeff = 1.0;
     
-    moon.LoadSphere(5,50,50);
+    moon.LoadSphere(10,60,60);
     moon.LoadFile("resources/earth.bmp");
     moon.mapcolor();
     moon.setAttributes(Vec3(0,0,-90),0,0);
+    moon.diffusionCoeff = 0.6;
 
 
     SDL_Event event;
