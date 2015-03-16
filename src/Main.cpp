@@ -15,7 +15,7 @@ int main(){
     Vec3 LookTo(0,0, 0);
    
     Graphics G(1024,700);
-    G.ambientCoeff = 0.2f;
+    G.ambientCoeff = 0.02f;
     G.setlightcolor(Vec3(0.7,0.7,0.7));
     G.setlightvector(Vec3(-1.0,0.0,0.0));
 
