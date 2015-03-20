@@ -40,6 +40,7 @@
              Color color;
              Vec3 normals;
              Vec2 texcoords;
+             bool visible;
         
             void operator = (const Vertex& v);
     };

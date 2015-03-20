@@ -153,13 +153,15 @@
 
         Matrix modelToWorldMat(4,4),worldToViewMat(4,4),projectionMat(4,4),normalRotationMat(4,4);
 
+
         modelToWorldMat = T.modelToWorld(position, selfRotationAngle, originRotationAngle);
         worldToViewMat = T.worldToView(camera,LookTo);
         projectionMat = T.Perspective(45,(float) 1024/700,0.01,10000);
 
         normalRotationMat = T.modelToWorld(position, selfRotationAngle + originRotationAngle, 0.0);
 
-        Vec3 cameraVector = camera/camera.magnitude();
+        Vec3 cameraVector = camera - LookTo ;
+        cameraVector = cameraVector/cameraVector.magnitude();
         Vec3 halfwayVector = cameraVector + G->lightVector;
         halfwayVector = halfwayVector/halfwayVector.magnitude();
 
@@ -171,24 +173,40 @@
 
                 v[i] =  m_vertices[i];
 
+                v[i].visible = true;
+
                 Matrix vertexMat(4,1),normalMat(4,1);
+                
+                normalMat(0) = v[i].normals.x;
+                normalMat(1) = v[i].normals.y;
+                normalMat(2) = v[i].normals.z;
+                normalMat(3) = 1;
+
+                normalMat = normalRotationMat * normalMat;
+
+                v[i].normals = Vec3(normalMat(0),normalMat(1),normalMat(2));
+
+                if(v[i].normals.dotProduct(cameraVector)>0){
+                        /*
+                        if(i==0){
+                         std::cout<<i<<"="<<v[i].normals.x<<":"<<v[i].normals.y<<":"<<v[i].normals.z;
+
+                         std::cout<<i<<"="<<cameraVector.x<<":"<<cameraVector.y<<":"<<cameraVector.z;
+                        }
+                        */
+                        v[i].visible = false;
+                        continue;
+                }
 
                 vertexMat(0) = v[i].vertices.x;
                 vertexMat(1) = v[i].vertices.y;
                 vertexMat(2) = v[i].vertices.z;
                 vertexMat(3) = 1 ;
 
-                normalMat(0) = v[i].normals.x;
-                normalMat(1) = v[i].normals.y;
-                normalMat(2) = v[i].normals.z;
-                normalMat(3) = 1;
-
                 vertexMat = compositeTransformation * vertexMat;
-                normalMat = normalRotationMat * normalMat;
 
 
                 v[i].vertices = Vec3(vertexMat(0)/vertexMat(3),vertexMat(1)/vertexMat(3),vertexMat(2)/vertexMat(3));
-                v[i].normals = Vec3(normalMat(0),normalMat(1),normalMat(2));
 
                 v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
                 v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
@@ -205,8 +223,10 @@
 
         }
 
-        for(unsigned int i=0;i<m_indices.size();i+=3)
+        for(unsigned int i=0;i<m_indices.size();i+=3){
+            if(v[m_indices[i]].visible && v[m_indices[i+1]].visible && v[m_indices[i+2]].visible)
                G->fill_all_triangle(v[m_indices[i]],v[m_indices[i+1]], v[m_indices[i+2]]);
+        }
 
     }
 
