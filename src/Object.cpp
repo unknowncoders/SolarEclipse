@@ -185,18 +185,8 @@
                 normalMat = normalRotationMat * normalMat;
 
                 v[i].normals = Vec3(normalMat(0),normalMat(1),normalMat(2));
-
-                if(v[i].normals.dotProduct(cameraVector)>0){
-                        /*
-                        if(i==0){
-                         std::cout<<i<<"="<<v[i].normals.x<<":"<<v[i].normals.y<<":"<<v[i].normals.z;
-
-                         std::cout<<i<<"="<<cameraVector.x<<":"<<cameraVector.y<<":"<<cameraVector.z;
-                        }
-                        */
-                        v[i].visible = false;
-                        continue;
-                }
+                v[i].normals = v[i].normals/v[i].normals.magnitude();
+                        
 
                 vertexMat(0) = v[i].vertices.x;
                 vertexMat(1) = v[i].vertices.y;
@@ -208,8 +198,22 @@
 
                 v[i].vertices = Vec3(vertexMat(0)/vertexMat(3),vertexMat(1)/vertexMat(3),vertexMat(2)/vertexMat(3));
 
-                v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
-                v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
+                //v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
+                //v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
+
+                /*
+
+                if(v[i].normals.dotProduct(cameraVector)>0){
+                        if(i==0){
+                         std::cout<<i<<"="<<v[i].normals.x<<":"<<v[i].normals.y<<":"<<v[i].normals.z;
+
+                         std::cout<<i<<"="<<cameraVector.x<<":"<<cameraVector.y<<":"<<cameraVector.z;
+                        }
+                        v[i].visible = false;
+                        continue;
+                }
+                */
+
 
                 float diffusionFactor = diffusionCoeff * lowerLimitZero(v[i].normals.dotProduct(G->lightVector));
                 float specularFactor = specularCoeff * pow(lowerLimitZero(v[i].normals.dotProduct(halfwayVector)),phongConstant);
@@ -224,8 +228,47 @@
         }
 
         for(unsigned int i=0;i<m_indices.size();i+=3){
-            if(v[m_indices[i]].visible && v[m_indices[i+1]].visible && v[m_indices[i+2]].visible)
-               G->fill_all_triangle(v[m_indices[i]],v[m_indices[i+1]], v[m_indices[i+2]]);
+                Vertex v1 = v[m_indices[i]];
+                Vertex v2 = v[m_indices[i+1]];
+                Vertex v3 = v[m_indices[i+2]];
+
+                /*
+                    v1 and v2 produces same value! 
+                    TODO figure out why this is happening.
+
+                if(i==0){
+                    std::cout<<v1.vertices.x<<":"<<v1.vertices.y<<":"<<v1.vertices.z<<std::endl;
+                    std::cout<<v2.vertices.x<<":"<<v2.vertices.y<<":"<<v2.vertices.z<<std::endl;
+                    std::cout<<v3.vertices.x<<":"<<v3.vertices.y<<":"<<v3.vertices.z<<std::endl;
+                }
+
+                */
+                
+                Vec3 v12 = v1.vertices - v2.vertices;
+                Vec3 v23 = v2.vertices - v3.vertices;
+
+                Vec3 normal = v12.crossProduct(v23);
+
+                normal = normal/normal.magnitude();
+
+                //Main Culling point. If the surface is facing away. Don't draw it. Just continue
+
+                if(normal.dotProduct(cameraVector) < 0){
+                        continue;
+                }
+
+            //if(v[m_indices[i]].visible && v[m_indices[i+1]].visible && v[m_indices[i+2]].visible)
+                v1.vertices.x =(v1.vertices.x*0.5f+0.5f)*1024;
+                v1.vertices.y =(v1.vertices.y*0.5f+0.5f)*700;
+
+                v2.vertices.x =(v2.vertices.x*0.5f+0.5f)*1024;
+                v2.vertices.y =(v2.vertices.y*0.5f+0.5f)*700;
+
+                v3.vertices.x =(v3.vertices.x*0.5f+0.5f)*1024;
+                v3.vertices.y =(v3.vertices.y*0.5f+0.5f)*700;
+
+               //G->fill_all_triangle(v[m_indices[i]],v[m_indices[i+1]], v[m_indices[i+2]]);
+               G->fill_all_triangle(v1,v2, v3);
         }
 
     }

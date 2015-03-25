@@ -50,7 +50,7 @@ int main(){
         G.resetZ();
 
         earth.draw(&G,camera,LookTo);
-        moon.draw(&G,camera,LookTo);
+        //moon.draw(&G,camera,LookTo);
         earth.setAngles(angle,0);
         moon.setAngles(0,angle1);
 
