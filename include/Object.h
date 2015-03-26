@@ -42,6 +42,8 @@
     
            
             void mapcolor();
+            
+            void printVal();
             void LoadSphere(float radius, uint16_t rings, uint16_t sectors);
             void LoadFile(std::string filename);
             void setAttributes(Vec3 _pos , float _selfRotAngle, float _originRotAngle);

@@ -145,6 +145,14 @@
 
     }
 
+    void Object3d::printVal(){
+            for(int i=0;i<m_vertices.size();i=i+3){
+                    std::cout<<m_vertices[m_indices[i]].vertices.x<<":"<<m_vertices[m_indices[i]].vertices.y<<":"<<m_vertices[m_indices[i]].vertices.z<<std::endl;
+                    std::cout<<m_vertices[m_indices[i+1]].vertices.x<<":"<<m_vertices[m_indices[i+1]].vertices.y<<":"<<m_vertices[m_indices[i+1]].vertices.z<<std::endl;
+                    std::cout<<m_vertices[m_indices[i+2]].vertices.x<<":"<<m_vertices[m_indices[i+2]].vertices.y<<":"<<m_vertices[m_indices[i+2]].vertices.z<<std::endl;
+            }
+    }
+
     void Object3d::draw(Graphics *G, Vec3& camera, Vec3& LookTo){
 
         unsigned int len = m_vertices.size();
