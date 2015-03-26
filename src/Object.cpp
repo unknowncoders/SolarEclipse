@@ -218,10 +218,12 @@
                 float diffusionFactor = diffusionCoeff * lowerLimitZero(v[i].normals.dotProduct(G->lightVector));
                 float specularFactor = specularCoeff * pow(lowerLimitZero(v[i].normals.dotProduct(halfwayVector)),phongConstant);
 
+
+        //This cause the coloring effect error
                 //TODO Fix whether to use the lightColor or vertexColor or a dedicated color for the specular lighting
-                v[i].color.r = G->lightColor.x * G->ambientCoeff * v[i].color.r + v[i].color.r * diffusionFactor + specularFactor * G->lightColor.x;
-                v[i].color.g = G->lightColor.y * G->ambientCoeff * v[i].color.g + v[i].color.g * diffusionFactor + specularFactor * G->lightColor.y;
-                v[i].color.b = G->lightColor.z * G->ambientCoeff * v[i].color.b + v[i].color.b * diffusionFactor + specularFactor * G->lightColor.z;
+             //   v[i].color.r = G->lightColor.x * G->ambientCoeff * v[i].color.r + v[i].color.r * diffusionFactor + specularFactor * G->lightColor.x;
+             //   v[i].color.g = G->lightColor.y * G->ambientCoeff * v[i].color.g + v[i].color.g * diffusionFactor + specularFactor * G->lightColor.y;
+             //   v[i].color.b = G->lightColor.z * G->ambientCoeff * v[i].color.b + v[i].color.b * diffusionFactor + specularFactor * G->lightColor.z;
 
 
 

@@ -66,7 +66,7 @@
 
             void setpixel(int x,int y,float z,  Color c);
     
-            void line(const Vertex& P1,const Vertex& P2);
+            void line(Vertex P1, Vertex P2);
     
             bool WaitQuit();
     

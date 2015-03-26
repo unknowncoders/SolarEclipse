@@ -79,8 +79,8 @@
 
     void  Graphics::fill_all_triangle(Vertex v1, Vertex v2, Vertex v3)
     {
-    
-                    Vertex v[3];
+  
+                   Vertex v[3];
                     v[0] = v1;
                     v[1] = v2;
                     v[2] = v3;
@@ -139,7 +139,7 @@
     
     void Graphics::fill_bottom_flat_triangle(Vertex v1 , Vertex v2, Vertex v3)
     {
-    
+  
            Vertex t1, t2;
     
            t1 =  v1;
@@ -159,7 +159,65 @@
                
            float b1 = (v2.vertices.y-v1.vertices.y)/( v2.color.b-v1.color.b);
            float b2 = (v3.vertices.y-v1.vertices.y)/( v3.color.b-v1.color.b);
-            
+  
+    /* 
+         if(m1 == 0) 
+           std::cout<<"M1 is zero"<<std::endl;
+         if(m2 == 0)
+            std::cout<<"M2 is 0"<<std::endl;
+           
+         if(z1 == 0) 
+           std::cout<<"z1 is zero"<<std::endl;
+         if(z2 == 0)
+            std::cout<<"z2 is 0"<<std::endl;
+           
+         if(r1 == 0) 
+           std::cout<<"r1 is zero"<<std::endl;
+         if(r2 == 0)
+            std::cout<<"r2 is 0"<<std::endl;
+           
+         if(g1 == 0) 
+           std::cout<<"g1 is zero"<<std::endl;
+        if(g2 == 0)
+            std::cout<<"g2 is 0"<<std::endl;
+        if(b1 == 0) 
+           std::cout<<"b1 is zero"<<std::endl;
+        if(b2 == 0)
+            std::cout<<"b2 is 0"<<std::endl;
+       
+        
+        int infinte = 100000000; 
+       
+        if(1/m1 == 0) 
+           m1 = infinte;
+
+         if(1/m2 == 0)
+           m2 = infinte;
+      
+        if(1/z1 == 0) 
+           z1 = infinte;
+       
+        if(1/z2 == 0)
+           z2 = infinte;
+           
+         if(1/r1 == 0) 
+           r1 = infinte;
+        
+         if(1/r2 == 0)
+           r2 = infinte;
+           
+         if(1/g1 == 0) 
+           g1 = infinte;
+        
+         if(1/g2 == 0)
+           g2 = infinte;
+        
+         if(1/b1 == 0) 
+           b1 = infinte;
+        
+         if(1/b2 == 0)
+           b2 = infinte;
+*/
            while(t1.vertices.y >=v2.vertices.y)
            
            {
@@ -216,7 +274,66 @@
                
            float b1 = (v2.vertices.y-v1.vertices.y)/( v2.color.b-v1.color.b);
            float b2 = (v3.vertices.y-v1.vertices.y)/( v3.color.b-v1.color.b);
-              
+        
+    /* 
+   
+         if(m1 == 0) 
+           std::cout<<"M1 is zero"<<std::endl;
+        if(m2 == 0)
+            std::cout<<"M2 is 0"<<std::endl;
+           
+         if(z1 == 0) 
+           std::cout<<"z1 is zero"<<std::endl;
+        if(z2 == 0)
+            std::cout<<"z2 is 0"<<std::endl;
+           
+         if(r1 == 0) 
+           std::cout<<"r1 is zero"<<std::endl;
+        if(r2 == 0)
+            std::cout<<"r2 is 0"<<std::endl;
+           
+         if(g1 == 0) 
+           std::cout<<"g1 is zero"<<std::endl;
+        if(g2 == 0)
+            std::cout<<"g2 is 0"<<std::endl;
+        if(b1 == 0) 
+           std::cout<<"b1 is zero"<<std::endl;
+        if(b2 == 0)
+            std::cout<<"b2 is 0"<<std::endl;
+            
+        int infinte = 100000000; 
+         
+        if(1/m1 == 0) 
+           m1 = infinte;
+
+         if(1/m2 == 0)
+           m2 = infinte;
+      
+        if(1/z1 == 0) 
+           z1 = infinte;
+       
+        if(1/z2 == 0)
+           z2 = infinte;
+           
+         if(1/r1 == 0) 
+           r1 = infinte;
+        
+         if(1/r2 == 0)
+           r2 = infinte;
+           
+         if(1/g1 == 0) 
+           g1 = infinte;
+        
+         if(1/g2 == 0)
+           g2 = infinte;
+        
+         if(1/b1 == 0) 
+           b1 = infinte;
+        
+         if(1/b2 == 0)
+           b2 = infinte;
+
+    */ 
               
            while(t1.vertices.y <=v2.vertices.y)
            {
@@ -261,12 +378,11 @@
         //Check for boundaries
         int x = P.x;
         int y = P.y;
-    
-    
+   
         //if (!(x>=0 && x <= width && y >=0 && y<=height)) return;
         if (x<0 || x > width || y < 0 || y > height) return;
     
-        if (P.z > Zbuffer[height*x + y])
+         if (P.z > Zbuffer[height*x + y])
             return;
         else
             Zbuffer[height*x + y] = P.z;
@@ -277,7 +393,8 @@
     
     }
     
-    void Graphics::setpixel(int x,int y,float z,  Color c){
+    void Graphics::setpixel(int x,int y,float z,  Color c)
+    {
         setpixel(Vec3(x,y,z),c);
     }
     
@@ -301,100 +418,55 @@
                std::fill_n(Zbuffer,(screen->w)*(screen->h),100);
     
     }
+   
+    void Graphics::line(Vertex P1, Vertex P2)
+    {
+       
+
+        Vertex temp1, temp2;
+
+        if(P1.vertices.x > P2.vertices.x)
+        {
+                temp1 = P2;
+                temp2 = P1;
+        }
+       
+        else
+         {
+           temp1 = P1;
+           temp2 = P2;
+         }
+
+       
+          
+         temp1.vertices.x = round(temp1.vertices.x);
+         temp2.vertices.x = round(temp2.vertices.x);
+
+         temp1.vertices.y = round(temp1.vertices.y);
+         temp2.vertices.y = round(temp2.vertices.y);
+
+         setpixel(temp1.vertices.x - 1, temp1.vertices.y,temp1.vertices.z, temp1.color);
     
-    void Graphics::line(const Vertex& P1,const Vertex& P2){
-    
-            float xstart = P1.vertices.x;
-            float xend = P2.vertices.x;
-            float ystart = P1.vertices.y;
-            float yend = P2.vertices.y;
-    
-            float z1 = P1.vertices.z;
-            float z2 = P2.vertices.z;
-    
-            Color c1 = P1.color;
-            Color c2 = P2.color;
-    
-            float dx = abs(xend - xstart);
-            float dy = abs(yend - ystart);
-    
-            float xinc = (xend>xstart ? 1 : -1);
-            float yinc = (yend>ystart ? 1 : -1);	
-    
-            float twodx = 2*dx;
-            float twody = 2*dy;
-            float twodydx = twody - twodx;
-    
-            float x = xstart;
-            float y = ystart;	
-    
-            float z;
-            Color c;
-    
-    
-        setpixel(round(x),round(y),z1, c1);
-    	
-    	if(dx > dy)
-    	{
-    		float p = twody - dx;
-    		
-    		while(round(x) != round(xend))
-    		{
-                z = z1 +((z2-z1)*(x-xstart))/(xend-xstart);
-                c.r = c1.r +((c2.r-c1.r)*(x-xstart))/(xend-xstart);
-                c.g = c1.g +((c2.g-c1.g)*(x-xstart))/(xend-xstart);
-                c.b = c1.b +((c2.b-c1.b)*(x-xstart))/(xend-xstart);
-                  
-                x += xinc;
-                
-    
-    			if(p<0)
-    			{
-    				p += twody;	
-    			}
-    			else
-    			{	
-    				y += yinc;
-    				p += twodydx;
-    			}
-                 setpixel(round(x),round(y),z, c);
-    		}
-    	}
-    	
-    	else
-    	{
-    		float p = twodx - dy;
-    		
-    		while(round(y) != round(yend))
-    		{
-    
-                z = z1 +((z2-z1)*(y-ystart))/(yend-ystart);
-           
-                c.r = c1.r +((c2.r-c1.r)*(y-ystart))/(yend-ystart);
-                c.g = c1.g +((c2.g-c1.g)*(y-ystart))/(yend-ystart);
-                c.b = c1.b +((c2.b-c1.b)*(y-ystart))/(yend-ystart);
-                
-                y += yinc;
-    			
-                if(p <0)
-    			{
-                        p += twodx;
-                }
-    		
-                else
-    			{
-    				x += xinc;
-    				p -= twodydx;
-    			}
-                 
-                setpixel(round(x),round(y),z, c);
-    		}
-    
-    	}
-    
+       if(temp1.vertices.x !=temp2.vertices.x)
+         {
+  
+            for(int i = temp1.vertices.x; i <= temp2.vertices.x ;++i)
+            {
+                setpixel(i, temp1.vertices.y,temp1.vertices.z, temp1.color);
+            }
+         
+         }
+       
+       else
+        {
+        
+          setpixel(temp1.vertices.x,temp1.vertices.y,temp1.vertices.z, temp1.color);
+       
+        }
+
     }
-    
-    bool Graphics::WaitQuit()
+
+bool Graphics::WaitQuit()
     {
         SDL_Event event;
         bool keypress = false;
