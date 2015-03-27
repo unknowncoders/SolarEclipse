@@ -15,7 +15,7 @@ int main(){
     Vec3 LookTo(0,0, 0);
    
     Graphics G(1024,700);
-    G.ambientCoeff = 1.00f;
+    G.ambientCoeff = 0.1f;
     G.setlightcolor(Vec3(0.7,0.7,0.7));
     G.setlightvector(Vec3(-1.0,0.0,0.0));
 
@@ -26,8 +26,8 @@ int main(){
     earth.mapcolor();
     earth.setAttributes(Vec3(0,0,0),0,0);
     earth.diffusionCoeff = 1.0;
-    earth.specularCoeff = 1.0;
-    earth.phongConstant = 1.1;
+    earth.specularCoeff = 0.2;
+    earth.phongConstant = 0.1;
     
     moon.LoadSphere(10,60,60);
     moon.LoadFile("resources/earth.bmp");
