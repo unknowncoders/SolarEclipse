@@ -15,7 +15,7 @@ int main(){
     Vec3 LookTo(0,0, 0);
    
     Graphics G(1024,700);
-    G.ambientCoeff = 0.1f;
+    G.ambientCoeff = 0.0f;
     G.setlightcolor(Vec3(0.7,0.7,0.7));
     G.setlightvector(Vec3(-1.0,0.0,0.0));
 
@@ -33,15 +33,16 @@ int main(){
     moon.LoadFile("resources/earth.bmp");
     moon.mapcolor();
     moon.setAttributes(Vec3(0,0,-90),0,0);
-    moon.diffusionCoeff = 0.9;
-    moon.specularCoeff = 1.0;
-    moon.phongConstant = 1.0;
+    moon.diffusionCoeff = 1.0;
+    moon.specularCoeff = 0.2;
+    moon.phongConstant = 0.1;
 
 
     SDL_Event event;
   
     float angle = 0;
     float angle1 = 0;
+
     
     while (1)
     {
@@ -49,8 +50,8 @@ int main(){
         G.clrscr();
         G.resetZ();
 
+        moon.draw(&G,camera,LookTo);
         earth.draw(&G,camera,LookTo);
-        //moon.draw(&G,camera,LookTo);
         earth.setAngles(angle,0);
         moon.setAngles(0,angle1);
 

@@ -166,7 +166,7 @@
         worldToViewMat = T.worldToView(camera,LookTo);
         projectionMat = T.Perspective(45,(float) 1024/700,0.01,10000);
 
-        normalRotationMat = T.modelToWorld(position, selfRotationAngle + originRotationAngle, 0.0);
+        normalRotationMat = T.RotateY(selfRotationAngle + originRotationAngle);
 
         Vec3 cameraVector = camera - LookTo ;
         cameraVector = cameraVector/cameraVector.magnitude();
