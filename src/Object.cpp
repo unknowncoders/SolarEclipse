@@ -281,13 +281,15 @@
                // Here the 4 is an arbitrary value to prevent adjacent vertices from messing with each other. 
                // Also, for surfaces (actually vertices) facing away from the light source, we ignore the shadow mapping
 
-                if( (z - G->lightBuffer[700*x+y]) > 4 and v[i].normals.dotProduct(G->lightVector) > 0){
+                if( (z - G->lightBuffer[700*x+y]) > 10 and v[i].normals.dotProduct(G->lightVector) > 0){
 
-                        v[i].color.r = 5;
-                        v[i].color.g = 5;
-                        v[i].color.b = 5;
+                        diffusionFactor = 0.0f;
 
-                }else{
+                        //v[i].color.r = 5;
+                        //v[i].color.g = 5;
+                        //v[i].color.b = 5;
+
+                }
 
 
 
@@ -297,7 +299,6 @@
                 v[i].color.g = G->lightColor.y * G->ambientCoeff * v[i].color.g + v[i].color.g * diffusionFactor + specularFactor * G->lightColor.y;
                 v[i].color.b = G->lightColor.z * G->ambientCoeff * v[i].color.b + v[i].color.b * diffusionFactor + specularFactor * G->lightColor.z;
 
-                }
 
 
         }
