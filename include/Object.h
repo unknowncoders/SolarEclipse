@@ -50,6 +50,7 @@
             void setAngles(float _selfRotAngle, float _originRotAngle);
 
             float lowerLimitZero(float _val);
+            void drawToLight(Graphics *G);
             void draw(Graphics *G, Vec3& camera,Vec3& LookTo);
             int DecreaseIntensity(int _val,int _margin);
     };

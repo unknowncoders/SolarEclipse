@@ -153,6 +153,66 @@
             }
     }
 
+    void Object3d::drawToLight(Graphics *G){
+        unsigned int len = m_vertices.size();
+    
+        Vertex v[len];
+
+        Matrix modelToWorldMat(4,4),normalRotationMat(4,4);
+
+
+        modelToWorldMat = T.modelToWorld(position, selfRotationAngle, originRotationAngle);
+        normalRotationMat = T.RotateY(selfRotationAngle + originRotationAngle);
+
+        for (unsigned int i=0;i<len;i++){
+
+                v[i] =  m_vertices[i];
+
+                Matrix vertexMat(4,1),normalMat(4,1);
+                
+                normalMat(0) = v[i].normals.x;
+                normalMat(1) = v[i].normals.y;
+                normalMat(2) = v[i].normals.z;
+                normalMat(3) = 1;
+
+                normalMat = normalRotationMat * normalMat;
+
+                v[i].normals = Vec3(normalMat(0),normalMat(1),normalMat(2));
+                v[i].normals = v[i].normals/v[i].normals.magnitude();
+                
+                // Cull the vectors facing away
+
+                if(v[i].normals.dotProduct(G->lightVector) < 0){ continue; }
+                        
+
+                vertexMat(0) = v[i].vertices.x;
+                vertexMat(1) = v[i].vertices.y;
+                vertexMat(2) = v[i].vertices.z;
+                vertexMat(3) = 1 ;
+
+                vertexMat = modelToWorldMat * vertexMat;
+
+                // We are cheating a bit here.
+                // Since the light is coming from -ve x-axis, we invert the role of x and z axes. 
+                // In other words, now x-axis represents z-value (depth) and z-axis represents the x-axis value
+                // The view port is also static at 1024 * 700
+
+                int x = vertexMat(2) + 512;
+                int y = vertexMat(1) + 350;
+                float z = vertexMat(0) + 200;
+
+
+                if(z < G->lightBuffer[700*x+y] ){
+
+                        G->lightBuffer[700*x+y] = z;
+
+                }
+
+
+        }
+
+    }
+
     void Object3d::draw(Graphics *G, Vec3& camera, Vec3& LookTo){
 
         unsigned int len = m_vertices.size();
@@ -201,39 +261,43 @@
                 vertexMat(2) = v[i].vertices.z;
                 vertexMat(3) = 1 ;
 
+                Matrix L_vertexMat(4,1);
+
+                L_vertexMat = modelToWorldMat * vertexMat;
+
                 vertexMat = compositeTransformation * vertexMat;
 
 
                 v[i].vertices = Vec3(vertexMat(0)/vertexMat(3),vertexMat(1)/vertexMat(3),vertexMat(2)/vertexMat(3));
 
-                //v[i].vertices.x =(v[i].vertices.x*0.5f+0.5f)*1024;
-                //v[i].vertices.y =(v[i].vertices.y*0.5f+0.5f)*700;
-
-                /*
-
-                if(v[i].normals.dotProduct(cameraVector)>0){
-                        if(i==0){
-                         std::cout<<i<<"="<<v[i].normals.x<<":"<<v[i].normals.y<<":"<<v[i].normals.z;
-
-                         std::cout<<i<<"="<<cameraVector.x<<":"<<cameraVector.y<<":"<<cameraVector.z;
-                        }
-                        v[i].visible = false;
-                        continue;
-                }
-                */
-
-
+                
                 float diffusionFactor = diffusionCoeff * lowerLimitZero(v[i].normals.dotProduct(G->lightVector));
                 float specularFactor = specularCoeff * pow(lowerLimitZero(v[i].normals.dotProduct(halfwayVector)),phongConstant);
 
+                int x = L_vertexMat(2) + 512;
+                int y = L_vertexMat(1) + 350;
+                float z = L_vertexMat(0) + 200;
 
-        //This cause the coloring effect error
+               // Here the 4 is an arbitrary value to prevent adjacent vertices from messing with each other. 
+               // Also, for surfaces (actually vertices) facing away from the light source, we ignore the shadow mapping
+
+                if( (z - G->lightBuffer[700*x+y]) > 4 and v[i].normals.dotProduct(G->lightVector) > 0){
+
+                        v[i].color.r = 5;
+                        v[i].color.g = 5;
+                        v[i].color.b = 5;
+
+                }else{
+
+
+
                 //TODO Fix whether to use the lightColor or vertexColor or a dedicated color for the specular lighting
                 //High value of the specularFactor causes the "purple" patch error
                 v[i].color.r = G->lightColor.x * G->ambientCoeff * v[i].color.r + v[i].color.r * diffusionFactor + specularFactor * G->lightColor.x;
                 v[i].color.g = G->lightColor.y * G->ambientCoeff * v[i].color.g + v[i].color.g * diffusionFactor + specularFactor * G->lightColor.y;
                 v[i].color.b = G->lightColor.z * G->ambientCoeff * v[i].color.b + v[i].color.b * diffusionFactor + specularFactor * G->lightColor.z;
 
+                }
 
 
         }

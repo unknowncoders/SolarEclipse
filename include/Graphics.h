@@ -52,6 +52,7 @@
         
        public:
 
+            float *lightBuffer;
             Vec3 lightColor;
             float ambientCoeff;
             Vec3 lightVector;
@@ -59,6 +60,8 @@
             Graphics(int width = 1024,int height=600);
     
             void setpixel(const Vec3& P,Color c);
+
+            void printLightBuffer();
 
             void setlightcolor(Vec3 _lightColor);
 
@@ -75,6 +78,8 @@
             void clrscr();
     
             void resetZ();
+
+            void resetLightBuffer();
      
           //to fill the triangle
             void fill_bottom_flat_triangle(Vertex , Vertex, Vertex);

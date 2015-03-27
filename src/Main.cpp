@@ -32,7 +32,7 @@ int main(){
     moon.LoadSphere(10,60,60);
     moon.LoadFile("resources/earth.bmp");
     moon.mapcolor();
-    moon.setAttributes(Vec3(0,0,-90),0,0);
+    moon.setAttributes(Vec3(-90,0,0),0,0);
     moon.diffusionCoeff = 1.0;
     moon.specularCoeff = 0.2;
     moon.phongConstant = 0.1;
@@ -49,9 +49,14 @@ int main(){
     
         G.clrscr();
         G.resetZ();
+        G.resetLightBuffer();
 
-        moon.draw(&G,camera,LookTo);
+        moon.drawToLight(&G);
+        earth.drawToLight(&G);
+
         earth.draw(&G,camera,LookTo);
+        moon.draw(&G,camera,LookTo);
+
         earth.setAngles(angle,0);
         moon.setAngles(0,angle1);
 

@@ -51,6 +51,7 @@
         SDL_Init(SDL_INIT_EVERYTHING);
         screen = SDL_SetVideoMode(width,height,32,SDL_SWSURFACE);
         Zbuffer = new float[(width*height)];
+        lightBuffer = new float[(width * height)];
     
     }
     
@@ -68,6 +69,20 @@
     void Graphics::setlightcolor(Vec3 _lightColor){
             
             lightColor = _lightColor;
+
+    }
+
+    void Graphics::printLightBuffer(){
+
+            for(int x = 482; x<= 542 ; x++){
+                for(int y = 320; y<= 380;y++){
+
+                        int val = lightBuffer[x*700+y];
+                        std::cout<<x<<","<<y<<"=>"<<val<<":";
+
+                }
+                std::cout<<std::endl;
+            }
 
     }
     
@@ -417,6 +432,16 @@
                
                std::fill_n(Zbuffer,(screen->w)*(screen->h),100);
     
+    }
+
+
+    void Graphics::resetLightBuffer(){
+
+               delete[] lightBuffer;
+              
+               lightBuffer = new float[(screen->w)*(screen->h)];
+               
+               std::fill_n(lightBuffer,(screen->w)*(screen->h),400);
     }
    
     void Graphics::line(Vertex P1, Vertex P2)
