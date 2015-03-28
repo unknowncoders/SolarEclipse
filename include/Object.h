@@ -42,6 +42,7 @@
     
            
             void mapcolor();
+            void mapsinglecolor();
             
             void printVal();
             void LoadSphere(float radius, uint16_t rings, uint16_t sectors);
