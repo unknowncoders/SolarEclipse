@@ -22,14 +22,14 @@ int main(){
     Object3d earth,moon;
  
     earth.LoadFile("resources/earthTexture.bmp");    
-    earth.LoadSphere(25, 150, 150);
+    earth.LoadSphere(25, 158, 158);
     earth.mapcolor();
     earth.setAttributes(Vec3(0,0,0),0,0);
     earth.diffusionCoeff = 1.0;
     earth.specularCoeff = 0.2;
     earth.phongConstant = 0.1;
     
-    moon.LoadSphere(10,60,60);
+    moon.LoadSphere(10,65,65);
     moon.LoadFile("resources/moonTexture.bmp");
     moon.mapcolor();
     moon.setAttributes(Vec3(-90,0,0),0,0);
@@ -73,8 +73,30 @@ int main(){
                 {
             
                    case SDL_KEYDOWN:
-                    switch (event.key.keysym.sym){
-                       case SDLK_ESCAPE:
+                   
+                        switch (event.key.keysym.sym){
+               
+                      case SDLK_LEFT:
+                              camera.x-=10; 
+                              std::cout<<camera.x<<std::endl;  
+                              break;
+
+                      case SDLK_RIGHT:
+                             camera.x+=10;
+                              std::cout<<camera.x<<std::endl;  
+                              break; 
+                
+                      case SDLK_DOWN:
+                              camera.z-=10; 
+                              std::cout<<camera.z<<std::endl;  
+                              break;
+
+                      case SDLK_UP:
+                             camera.z+=10;
+                              std::cout<<camera.z<<std::endl;  
+                              break; 
+                      
+                      case SDLK_ESCAPE:
                                return 0;
                     }
                 }
