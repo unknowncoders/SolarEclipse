@@ -128,6 +128,17 @@
     
     
     }
+
+    void Object3d::mapsinglecolor()
+    {
+            for(unsigned int i=0; i<m_vertices.size();i++)
+            {
+                    m_vertices[i].color.r = 254; 
+                    m_vertices[i].color.g = 254; 
+                    m_vertices[i].color.b = 254; 
+            }
+
+    }
     
     int Object3d::DecreaseIntensity(int _val, int _margin){
        int ret = _val - _margin;
