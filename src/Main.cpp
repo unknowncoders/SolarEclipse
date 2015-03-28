@@ -21,7 +21,7 @@ int main(){
 
     Object3d earth,moon;
  
-    earth.LoadFile("resources/earth.bmp");    
+    earth.LoadFile("resources/earthTexture.bmp");    
     earth.LoadSphere(25, 150, 150);
     earth.mapcolor();
     earth.setAttributes(Vec3(0,0,0),0,0);
@@ -30,7 +30,7 @@ int main(){
     earth.phongConstant = 0.1;
     
     moon.LoadSphere(10,60,60);
-    moon.LoadFile("resources/earth.bmp");
+    moon.LoadFile("resources/moonTexture.bmp");
     moon.mapcolor();
     moon.setAttributes(Vec3(-90,0,0),0,0);
     moon.diffusionCoeff = 1.0;
