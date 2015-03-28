@@ -119,7 +119,6 @@
             
             
             if(v[0].vertices.y==v[1].vertices.y)
-            
             {
             
                 fill_bottom_flat_triangle ( v[2] , v[0], v[1]) ;
@@ -471,17 +470,28 @@
          temp2.vertices.y = round(temp2.vertices.y);
 
          setpixel(temp1.vertices.x - 1, temp1.vertices.y,temp1.vertices.z, temp1.color);
-    
+   
        if(temp1.vertices.x !=temp2.vertices.x)
          {
-  
-            for(int i = temp1.vertices.x; i <= temp2.vertices.x ;++i)
+ 
+                int slopeZ = (temp2.vertices.z - temp1.vertices.z)/(temp2.vertices.x - temp1.vertices.x);
+                
+                int slopeR = (temp2.color.r - temp1.color.r)/(temp2.vertices.x - temp1.vertices.x);
+                int slopeG = (temp2.color.g - temp1.color.g)/(temp2.vertices.x - temp1.vertices.x);
+                int slopeB = (temp2.color.b - temp1.color.b)/(temp2.vertices.x - temp1.vertices.x);
+
+        for(int i = temp1.vertices.x; i <= temp2.vertices.x ;++i)
             {
+            
                 setpixel(i, temp1.vertices.y,temp1.vertices.z, temp1.color);
+              
+                temp1.vertices.z += slopeZ; 
+                temp1.color.r +=slopeR;             
+                temp1.color.g +=slopeG;             
+                temp1.color.b +=slopeB;             
             }
          
-         }
-       
+         } 
        else
         {
         
